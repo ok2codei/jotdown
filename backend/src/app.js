@@ -1,13 +1,18 @@
 import express from "express";
+import authRoutes from "./routes/auth.routes.js"
+import { errorHandler } from "./middleware/errorHandler.js";
 import userRoutes from "./routes/users.routes.js";
 import notesRoutes from "./routes/notes.routes.js";
 import foldersRoutes from "./routes/folders.routes.js";
 import tagsRoutes from "./routes/tags.routes.js";
 
+
 const app = express();
 
 app.use(express.json());
 
+app.use("/api", authRoutes);
+app.use(errorHandler);
 app.use('/users', userRoutes);
 app.use('/notes', notesRoutes);
 app.use('/folders', foldersRoutes);
