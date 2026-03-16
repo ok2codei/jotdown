@@ -1,31 +1,53 @@
 import db from "../config/db.js";
 
 export const getNotes = async (req, res) => {
-  try {
-    const { user_id } = req.query;
 
-    const userId = req.user.user_id;
+ try {
 
-    const { rows } = await db.query(
-      `SELECT * FROM app.notes
-       WHERE user_id = $1
-       AND deleted_at IS NULL`,
-      [userId]
-    );
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 10;
 
-    res.status(200).json({
-      success: true,
-      data: rows
-    });
+  const offset = (page - 1) * limit;
 
-  } catch (error) {
-    console.error(error);
+  const userId = req.user.user_id;
 
-    res.status(500).json({
-      success: false,
-      message: "Failed to get notes"
-    });
-  }
+  // get total count
+  const totalResult = await db.query(
+   `SELECT COUNT(*) FROM app.notes
+    WHERE user_id=$1
+    AND deleted_at IS NULL`,
+   [userId]
+  );
+
+  const total = parseInt(totalResult.rows[0].count);
+
+  // get paginated notes
+  const { rows } = await db.query(
+   `SELECT * FROM app.notes
+    WHERE user_id=$1
+    AND deleted_at IS NULL
+    ORDER BY created_at DESC
+    LIMIT $2 OFFSET $3`,
+   [userId, limit, offset]
+  );
+
+  res.status(200).json({
+   success: true,
+   page,
+   limit,
+   total,
+   data: rows
+  });
+
+ } catch (error) {
+  console.error(error);
+  res.status(500).json({
+   success:false,
+   message:"Failed to fetch notes"
+  });
+
+ }
+
 };
 
 export const getNotesById = async (req, res)=>{
@@ -159,4 +181,145 @@ export const deleteNote = async (req, res) => {
       message: "Failed to delete note"
     });
   }
+};
+
+
+// Special operation on Notes
+export const archiveNote = async (req, res) => {
+
+ try {
+
+  const { id } = req.params;
+
+  const { rows } = await db.query(
+   `UPDATE app.notes
+    SET is_archived = TRUE,
+        updated_at = CURRENT_TIMESTAMP
+    WHERE note_id=$1
+    AND user_id=$2
+    RETURNING *`,
+   [id, req.user.user_id]
+  );
+
+  if (rows.length === 0) {
+   return res.status(404).json({
+    message: "Note not found"
+   });
+  }
+
+  res.json({
+   success: true,
+   data: rows[0]
+  });
+
+ } catch (error) {
+
+  res.status(500).json({
+   message: "Archive failed"
+  });
+
+ }
+
+};
+
+export const getNotesByTag = async (req, res) => {
+
+ try {
+
+  const { tagId } = req.params;
+
+  const { rows } = await db.query(
+   `SELECT n.*
+    FROM app.notes n
+    JOIN app.note_tags nt
+    ON n.note_id = nt.note_id
+    WHERE nt.tag_id=$1
+    AND n.user_id=$2
+    AND n.deleted_at IS NULL`,
+   [tagId, req.user.user_id]
+  );
+
+  res.json({
+   success: true,
+   data: rows
+  });
+
+ } catch (error) {
+
+  res.status(500).json({
+   message: "Failed to fetch notes by tag"
+  });
+
+ }
+
+};
+
+export const searchNotes = async (req, res) => {
+
+ try {
+
+  const { q } = req.query;
+
+  const { rows } = await db.query(
+   `SELECT *
+    FROM app.notes
+    WHERE user_id=$1
+    AND deleted_at IS NULL
+    AND (
+        title ILIKE $2
+        OR content ILIKE $2
+    )
+    ORDER BY created_at DESC`,
+   [req.user.user_id, `%${q}%`]
+  );
+
+  res.json({
+   success: true,
+   data: rows
+  });
+
+ } catch (error) {
+
+  res.status(500).json({
+   message: "Search failed"
+  });
+
+ }
+
+};
+
+export const getNotesWithTags = async (req, res) => {
+
+ try {
+
+  const { rows } = await db.query(
+   `SELECT 
+     n.note_id,
+     n.title,
+     json_agg(t.name) AS tags
+    FROM app.notes n
+    LEFT JOIN app.note_tags nt
+    ON n.note_id = nt.note_id
+    LEFT JOIN app.tags t
+    ON nt.tag_id = t.tag_id
+    WHERE n.user_id=$1
+    AND n.deleted_at IS NULL
+    GROUP BY n.note_id
+    ORDER BY n.created_at DESC`,
+   [req.user.user_id]
+  );
+
+  res.json({
+   success: true,
+   data: rows
+  });
+
+ } catch (error) {
+
+  res.status(500).json({
+   message: "Failed to fetch notes"
+  });
+
+ }
+
 };
