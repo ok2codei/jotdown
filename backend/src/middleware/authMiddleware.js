@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken"
 
-function verifyToken(req, res, next) {
+export const verifyToken= async (req, res, next) => {
 
  const authHeader = req.headers.authorization;
 
@@ -18,7 +18,15 @@ function verifyToken(req, res, next) {
    token,
    process.env.JWT_SECRET
   );
+  
+  const userCheck = await db.query(
+      "SELECT id FROM app.users WHERE id = $1 AND deleted_at IS NULL",
+      [decoded.user_id]
+    );
 
+    if (userCheck.rows.length === 0) {
+      return res.status(401).json({ message: "User no longer exists or is deactivated" });
+    }
   req.user = decoded;
 
   next();
@@ -31,6 +39,4 @@ function verifyToken(req, res, next) {
 
  }
 
-}
-
-export  {verifyToken};
+};

@@ -3,7 +3,7 @@ import {
  createFolder,
  getFolders,
  deleteFolder
-} from "../controllers/folders.controller.js";
+} from "../controllers/folders.controllers.js";
 
 import { verifyToken } from "../middleware/authMiddleware.js";
 

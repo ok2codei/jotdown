@@ -53,7 +53,8 @@ export const updateUser = async (req, res) => {
  } catch (error) {
   res.status(500).json({
     success: false,
-   message: "Update failed"
+   message: "Update failed",
+   error:console.error(error)
   });
 
  }

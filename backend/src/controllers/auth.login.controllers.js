@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
-import db from '../config/db'
+import db from '../config/db.js'
 
 const loginUser = async (req, res) => {
 
@@ -9,7 +9,7 @@ const loginUser = async (req, res) => {
   const { email, password } = req.body;
 
   const result = await db.query(
-   "SELECT * FROM users WHERE email=$1",
+   "SELECT * FROM app.users WHERE email=$1",
    [email]
   );
 
@@ -28,7 +28,7 @@ const loginUser = async (req, res) => {
     message: "Invalid credentials"
    });
   }
-
+  //create new token
   const token = jwt.sign(
    { user_id: user.id },
    process.env.JWT_SECRET,
@@ -42,7 +42,8 @@ const loginUser = async (req, res) => {
  } catch (error) {
 
   res.status(500).json({
-   message: "Server error"
+   message: "Server error",
+   error: error.message
   });
 
  }

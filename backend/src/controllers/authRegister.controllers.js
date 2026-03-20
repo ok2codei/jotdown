@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt';
-import db from '../config/db'
+import db from '../config/db.js'
 
 
 export const registerUser = async (req, res) => {
@@ -19,7 +19,7 @@ export const registerUser = async (req, res) => {
    });
   }
 
-  const hashedPassword = await bcrypt.hash(password, 10);
+  const hashedPassword = await bcrypt.hash(password, 10); //10- cost factor/salt round
 
   const { rows } = await db.query(
    `INSERT INTO app.users(username,email,password)

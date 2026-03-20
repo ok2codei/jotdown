@@ -14,11 +14,11 @@ import { validateNote } from "../middleware/validateNote.js";
 
 const router= express.Router();
 
-router.get("/notes", verifyToken, validateNote, getNotes);
-router.get("/notes/:id", verifyToken, validateNote, getNotesById);
-router.post("/notes", verifyToken, validateNote, createNote);
-router.put("/notes/:id", verifyToken, validateNote, updateNote);
-router.delete("/notes/:id", verifyToken, validateNote, deleteNote);
+router.get("/", verifyToken, validateNote, getNotes);
+router.get("/:id", verifyToken, validateNote, getNotesById);
+router.post("/", verifyToken, validateNote, createNote);
+router.put("/:id", verifyToken, validateNote, updateNote);
+router.delete("/:id", verifyToken, validateNote, deleteNote);
 router.patch("/:id/archive",verifyToken,archiveNote);
 router.get("/by-tag/:tagId",verifyToken,getNotesByTag);
 router.get("/search",verifyToken,searchNote);

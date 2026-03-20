@@ -4,7 +4,7 @@ import { verifyToken } from "../middleware/authMiddleware.js";
 import {
  addTagToNote,
  removeTagFromNote
-} from "../controllers/noteTags.controller.js";
+} from "../controllers/noteTags.controllers.js";
 
 const router = express.Router();
 

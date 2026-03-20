@@ -10,7 +10,22 @@ CREATE TABLE IF NOT EXISTS app.users (
  deleted_at TIMESTAMP
 );
 
+CREATE TABLE IF NOT EXISTS app.folders (
 
+    id SERIAL PRIMARY KEY,
+
+    user_id INTEGER NOT NULL,
+
+    name VARCHAR(100) NOT NULL,
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_folder_user
+        FOREIGN KEY (user_id)
+        REFERENCES app.users(id)
+        ON DELETE CASCADE
+);
 
 CREATE TABLE IF NOT EXISTS app.notes (
 
@@ -37,22 +52,7 @@ CREATE TABLE IF NOT EXISTS app.notes (
         ON DELETE SET NULL
 );
 
-CREATE TABLE IF NOT EXISTS app.folders (
 
-    id SERIAL PRIMARY KEY,
-
-    user_id INTEGER NOT NULL,
-
-    name VARCHAR(100) NOT NULL,
-
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-
-    CONSTRAINT fk_folder_user
-        FOREIGN KEY (user_id)
-        REFERENCES app.users(id)
-        ON DELETE CASCADE
-);
 
 CREATE TABLE IF NOT EXISTS app.tags (
     id SERIAL PRIMARY KEY,
@@ -64,7 +64,7 @@ CREATE TABLE IF NOT EXISTS app.tags (
         ON DELETE CASCADE
 );
 
-CREATE TABLE app.note_tags (
+CREATE TABLE IF NOT EXISTS app.note_tags (
 
     note_id INTEGER NOT NULL,
     tag_id INTEGER NOT NULL,
@@ -81,11 +81,11 @@ CREATE TABLE app.note_tags (
 );
 
 -- index for searching---
-CREATE INDEX idx_notes_user
+CREATE INDEX IF NOT EXISTS idx_notes_user
 ON app.notes(user_id);
 
-CREATE INDEX idx_note_tags_note
+CREATE INDEX IF NOT EXISTS idx_note_tags_note
 ON app.note_tags(note_id);
 
-CREATE INDEX idx_note_tags_tag
+CREATE INDEX IF NOT EXISTS idx_note_tags_tag
 ON app.note_tags(tag_id);

@@ -56,7 +56,7 @@ export const getNotesById = async (req, res)=>{
         const userId = req.user.user_id;
         const {rows}= await db.query(
           `SELECT * FROM app.notes
-           WHERE note_id=$1
+           WHERE id=$1
            AND user_id=$2
            AND deleted_at IS NULL`
            , [id, userId]);
@@ -119,7 +119,7 @@ export const updateNote = async (req, res) => {
        SET title = $1,
            content = $2,
            updated_at = CURRENT_TIMESTAMP
-       WHERE note_id = $3
+       WHERE id = $3
        AND user_id = $4
        RETURNING *`,
       [title, content, id,userId]
@@ -156,7 +156,7 @@ export const deleteNote = async (req, res) => {
     const { rowCount } = await db.query(
       `UPDATE app.notes
        SET deleted_at = CURRENT_TIMESTAMP
-       WHERE note_id = $1
+       WHERE id = $1
        AND user_id = $2`,
       [id,userId]
     );
@@ -195,7 +195,7 @@ export const archiveNote = async (req, res) => {
    `UPDATE app.notes
     SET is_archived = TRUE,
         updated_at = CURRENT_TIMESTAMP
-    WHERE note_id=$1
+    WHERE id=$1
     AND user_id=$2
     RETURNING *`,
    [id, req.user.user_id]
@@ -232,7 +232,7 @@ export const getNotesByTag = async (req, res) => {
    `SELECT n.*
     FROM app.notes n
     JOIN app.note_tags nt
-    ON n.note_id = nt.note_id
+    ON n.id = nt.note_id
     WHERE nt.tag_id=$1
     AND n.user_id=$2
     AND n.deleted_at IS NULL`,
@@ -254,7 +254,7 @@ export const getNotesByTag = async (req, res) => {
 
 };
 
-export const searchNotes = async (req, res) => {
+export const searchNote = async (req, res) => {
 
  try {
 
@@ -294,17 +294,17 @@ export const getNotesWithTags = async (req, res) => {
 
   const { rows } = await db.query(
    `SELECT 
-     n.note_id,
+     n.id,
      n.title,
      json_agg(t.name) AS tags
     FROM app.notes n
     LEFT JOIN app.note_tags nt
-    ON n.note_id = nt.note_id
+    ON n.id = nt.note_id
     LEFT JOIN app.tags t
     ON nt.tag_id = t.tag_id
     WHERE n.user_id=$1
     AND n.deleted_at IS NULL
-    GROUP BY n.note_id
+    GROUP BY n.id
     ORDER BY n.created_at DESC`,
    [req.user.user_id]
   );

@@ -4,28 +4,16 @@ import {
  getUserProfile,
  updateUser,
  deleteUser
-} from "../controllers/users.controller.js";
+} from "../controllers/users.controllers.js";
 
 import { verifyToken } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
-router.get(
- "/profile",
- verifyToken,
- getUserProfile
-);
+router.get("/profile",verifyToken,getUserProfile);
 
-router.put(
- "/profile",
- verifyToken,
- updateUser
-);
+router.put("/profile",verifyToken,updateUser);
 
-router.delete(
- "/profile",
- verifyToken,
- deleteUser
-);
+router.delete("/profile",verifyToken,deleteUser);
 
 export default router;

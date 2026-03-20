@@ -18,3 +18,6 @@ export function validateNote(req, res, next) {
 
  next();
 }
+
+
+// validate security of note content- monitor any malicous entries

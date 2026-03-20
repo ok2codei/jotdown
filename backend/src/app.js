@@ -17,14 +17,24 @@ app.use('/notes', notesRoutes);
 app.use('/folders', foldersRoutes);
 app.use('/tags', tagsRoutes);
 app.use(errorHandler);
+
+app.get('/', (req, res) => {
+  res.json({ status: "success", message: "Server is alive!" });
+});
+
+
 async function startServer() {
+  try {
+    await initDB();
+    console.log("Database initialized");
+  } catch (err) {
+    console.error("Database init skipped or failed:", err.message);
+    // Continue starting server anyway if the tables already exist
+  }
 
- await initDB();
-
- app.listen(5000, () => {
-  console.log("Server started");
- });
-
+  app.listen(5000, () => {
+    console.log("Server started on port 5000");
+  });
 }
 
 startServer();
