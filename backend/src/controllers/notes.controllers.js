@@ -16,7 +16,7 @@ export const getNotes = async (req, res) => {
    `SELECT COUNT(*) FROM app.notes
     WHERE user_id=$1
     AND deleted_at IS NULL`,
-   [userId]
+    [userId]
   );
 
   const total = parseInt(totalResult.rows[0].count);
