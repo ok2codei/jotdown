@@ -1,9 +1,15 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import type { LoginFormData } from "../../types/auth";
+import type { LoginFormData } from "@/types/auth";
+import { useNavigate } from "react-router-dom";
+import { LoginUser } from "../../services/authService";
+import { useAuth } from "../../hooks/useAuth";
 
 
 const Login=()=>{
+const [loading, setLoading] = useState(false);
+const [error, setError] = useState(null);
+
    const{
       register,
       handleSubmit,
@@ -11,8 +17,20 @@ const Login=()=>{
       setFocus,
     }= useForm<LoginFormData>();
 
-    const onSubmit=(data:LoginFormData)=>{
-      console.log("Form Data:", data)
+    const {login}= useAuth();
+    const navigate= useNavigate();
+    const onSubmit=async (data:LoginFormData)=>{
+    setLoading(true);
+    setError(null);
+     try{
+      const res= await LoginUser(data);
+      login(res.token);
+      navigate("/app/notes");
+     }catch(err:any){
+       setError(err.message || "Invalid email or password")
+     } finally{
+      setLoading(false);
+     }
     };
     
     useEffect(()=>{
@@ -21,8 +39,8 @@ const Login=()=>{
 
     
  return (
-    <main className="h-screen flex items-center justify-center bg-gray-50">
-     <section className="bg-white p-6 rounded-xl shadow-md w-80">
+    <main className="flex items-center justify-center bg-gray-50">
+     <section className="bg-white p-6 rounded-xl shadow-md w-full max-w-md">
         <h1 className="text-xl font-semibold mb-4">Login</h1>
 
        <form onSubmit={handleSubmit(onSubmit)} >
@@ -30,11 +48,11 @@ const Login=()=>{
        <input
        id="email"
        type="email"
-       aria-invalid={!errors.email} 
+       aria-invalid={!!errors.email} 
        { ...register("email",{
          required:"Email is required",
          pattern:{
-            value: /^\S+@\S+$/i,
+            value: /^\S+@\S+$/,
             message:"Invalid email format",
          }
        })}
@@ -49,7 +67,7 @@ const Login=()=>{
         <input 
         id="password"
         type="password"
-        aria-invalid={!errors.password}
+        aria-invalid={!!errors.password}
         { ...register( "password",{
          required: "Password is required",
          minLength:{
@@ -65,9 +83,10 @@ const Login=()=>{
         )}
         <button
         type="submit"
+        disabled={loading}
         aria-label="Login to your account"
         className="w-full bg-blue-600 text-white mt-2 p-1 border rounded">
-        Login
+        {loading ? "Logging in..." : "Login"}
         </button>
       </form>
      </section>

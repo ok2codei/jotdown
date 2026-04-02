@@ -17,7 +17,7 @@ const [user,setUser]= useState<User | null>(null);
 
 useEffect(()=>{
     const token = localStorage.getItem("token");
-    if(!token) setUser({token});
+    if(token) setUser({token});
 },[])
 
 const login=(token: string)=>{

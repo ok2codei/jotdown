@@ -6,11 +6,13 @@ import notesRoutes from "./routes/notes.routes.js";
 import foldersRoutes from "./routes/folders.routes.js";
 import tagsRoutes from "./routes/tags.routes.js";
 import initDB from "./database/initDB.js";
-
+import cors from "cors";
 const app = express();
 
 app.use(express.json());
-
+app.use(cors({
+  origin: 'http://localhost:5173' 
+}));
 app.use("/api", authRoutes);
 app.use('/users', userRoutes);
 app.use('/notes', notesRoutes);

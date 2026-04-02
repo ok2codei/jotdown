@@ -25,7 +25,7 @@ const loginUser = async (req, res) => {
 
   if (!validPassword) {
    return res.status(401).json({
-    message: "Invalid credentials"
+    message: "Invalid password"
    });
   }
   //create new token
