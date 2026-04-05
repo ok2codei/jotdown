@@ -7,4 +7,3 @@ export type Note ={
     createdAt: string;
     updatedAt: string;
 };
-

@@ -14,7 +14,7 @@ export const useNotes = () => {
   useEffect(() => {
     const fetchNotes = async () => {
       const token = localStorage.getItem("token");
-    if (!token) return; 
+    if (!token) return; // 🛑 Stop if no token
       setLoading(true);
       try {
         const data = await noteService.getNotes();
