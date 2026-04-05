@@ -1,3 +1,9 @@
+export interface ApiResponse<T> {
+  success: boolean;
+  message?: string;
+  data: T; 
+}
+
 export interface LoginFormData {
   email: string;
   password: string;
@@ -10,12 +16,6 @@ export interface LoginFormData {
 }
 
 
-export interface ApiResponse<T> {
-  success: boolean;
-  message?: string;
-  data: T; // This T will be AuthResponse, Note, or Note[]
-}
-
 export interface AuthData {
   token: string;
   user: {
@@ -24,3 +24,4 @@ export interface AuthData {
     username: string;
   };
 }
+
