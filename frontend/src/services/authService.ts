@@ -1,37 +1,12 @@
-import type { LoginFormData,AuthResponse , RegisterFormData} from "../types/auth";
+import type { AuthData, ApiResponse, LoginFormData,RegisterFormData } from "../types/auth";
+import api from "./api";
 
-const API_URL= import.meta.env.VITE_API_URL;
-
-export const LoginUser= async(data: LoginFormData
-) : Promise<AuthResponse> =>{
-    const res= await fetch(`${API_URL}/login`,{
-      method: "POST",
-      headers: {
-        "Content-Type":"application/json",
-      },
-      body: JSON.stringify(data),
-    })
-
-    if(!res.ok){
-        throw new Error("Invalid credentials");
-    }
-    return res.json();
+export const LoginUser = async (data: LoginFormData) => {
+  const res = await api.post<ApiResponse<AuthData>>("/login", data);
+  return res.data.data; 
 };
 
-export const RegisterUser= async(data: RegisterFormData
-) =>{
-  const res = await fetch(`${API_URL}/register`,{
-    method: "POST",
-    headers: {
-      "Content-Type" : "application/json",
-    },
-    body: JSON.stringify(data),
-  })
-  
-  if (!res.ok) {
-    const errorData = await res.json().catch(() => ({})); // inline catch
-    throw new Error(errorData.message || "Registration failed");
-  }
-
-  return res.json();
-}
+export const RegisterUser = async (data: RegisterFormData) => {
+  const res = await api.post<ApiResponse<AuthData>>("/register", data);
+  return res.data.data;
+};

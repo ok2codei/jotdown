@@ -1,11 +1,11 @@
 export function validateNote(req, res, next) {
 
- const { title, content } = req.body;
+ const { title } = req.body;
 
- if (!title || !content) {
+ if (!title || title.trim() === "") {
   return res.status(400).json({
    success:false,
-   message:"Title and content are required"
+   message:"Title required"
   });
  }
 

@@ -14,8 +14,8 @@ import { validateNote } from "../middleware/validateNote.js";
 
 const router= express.Router();
 
-router.get("/", verifyToken, validateNote, getNotes);
-router.get("/:id", verifyToken, validateNote, getNotesById);
+router.get("/", verifyToken,  getNotes);
+router.get("/:id", verifyToken,  getNotesById);
 router.post("/", verifyToken, validateNote, createNote);
 router.put("/:id", verifyToken, validateNote, updateNote);
 router.delete("/:id", verifyToken, validateNote, deleteNote);

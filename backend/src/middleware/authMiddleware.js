@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken"
+import db from "../config/db.js"
 
 export const verifyToken= async (req, res, next) => {
 
@@ -23,7 +24,7 @@ export const verifyToken= async (req, res, next) => {
       "SELECT id FROM app.users WHERE id = $1 AND deleted_at IS NULL",
       [decoded.user_id]
     );
-
+    
     if (userCheck.rows.length === 0) {
       return res.status(401).json({ message: "User no longer exists or is deactivated" });
     }
@@ -33,9 +34,10 @@ export const verifyToken= async (req, res, next) => {
 
  } catch (error) {
 
-  return res.status(403).json({
-   message: "Invalid token"
-  });
+  console.error("--- AUTH ERROR ---");
+  console.error("Message:", error.message);
+  console.error("Stack:", error.stack);
+  return res.status(403).json({ message: "Invalid token", dev_err: error.message });
 
  }
 

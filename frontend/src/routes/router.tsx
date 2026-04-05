@@ -4,18 +4,15 @@ import AppLayout from "../layouts/AppLayout.tsx";
 
 import Login from "../pages/auth/Login.tsx";
 import  Register  from "../pages/auth/Register.tsx";
-import { Notes } from "../pages/app/Notes.tsx";
+import  Notes  from "../pages/app/Notes.tsx";
 
 import ProtectedRoute from "./ProtectedRoute.tsx";
 
 const router = createBrowserRouter([
-    // {
-    //     path : "*",
-    //     element: <h1>phewwww</h1>
-    // },
+
     {
         path : "/",
-        element: <Navigate to="/app/notes" />
+        element: <Navigate to="/auth/login" />
     },
     {
         path: "/auth",
@@ -27,7 +24,7 @@ const router = createBrowserRouter([
     },
 
     {
-        path: "/app",
+        path: "/",
         element: (  
         <ProtectedRoute>   
              <AppLayout /> 

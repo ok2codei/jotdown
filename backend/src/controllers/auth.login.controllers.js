@@ -36,7 +36,10 @@ const loginUser = async (req, res) => {
   );
 
   res.json({
-   token
+    success: true,
+    data:{
+        token 
+    }
   });
 
  } catch (error) {

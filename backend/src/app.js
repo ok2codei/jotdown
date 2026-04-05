@@ -9,15 +9,17 @@ import initDB from "./database/initDB.js";
 import cors from "cors";
 const app = express();
 
-app.use(express.json());
+
 app.use(cors({
-  origin: 'http://localhost:5173' 
+  origin: 'http://localhost:5173',
+  credentials: true,
 }));
+app.use(express.json());
 app.use("/api", authRoutes);
-app.use('/users', userRoutes);
-app.use('/notes', notesRoutes);
-app.use('/folders', foldersRoutes);
-app.use('/tags', tagsRoutes);
+app.use("/api/users", userRoutes);
+app.use("/api/notes", notesRoutes);
+app.use("/api/folders", foldersRoutes);
+app.use("/api/tags", tagsRoutes);
 app.use(errorHandler);
 
 app.get('/', (req, res) => {

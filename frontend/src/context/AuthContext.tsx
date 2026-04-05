@@ -1,4 +1,5 @@
 import { createContext, useState, useEffect } from "react";
+import api from "../services/api";
 
 interface User{
     token: string;
@@ -23,6 +24,7 @@ useEffect(()=>{
 const login=(token: string)=>{
     localStorage.setItem("token", token);
     setUser({token})
+    api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 }
 const logout = ()=>{
     localStorage.removeItem("token");

@@ -1,4 +1,4 @@
-import { Notes } from "../pages/app/Notes" 
+import  Notes  from "../pages/app/Notes" 
 
 const AppLayout=()=>{
     return (

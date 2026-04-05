@@ -24,8 +24,9 @@ const [error, setError] = useState(null);
     setError(null);
      try{
       const res= await LoginUser(data);
+      console.log("login success",res)
       login(res.token);
-      navigate("/app/notes");
+      navigate("/notes");
      }catch(err:any){
        setError(err.message || "Invalid email or password")
      } finally{
