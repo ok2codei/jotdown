@@ -39,14 +39,14 @@ const Notes = () => {
           <div className="mt-4 flex gap-2">
             <Button
               variant="danger"
-              onClick={() => deleteNote(activeNote._id)}
+              onClick={() => deleteNote(activeNote.id)}
             >
               Delete
             </Button>
 
             <Button
               variant="secondary"
-              onClick={() => archiveNote(activeNote._id)}
+              onClick={() => archiveNote(activeNote.id)}
             >
               Archive
             </Button>

@@ -1,21 +1,12 @@
 import api from "./api";
 import type { Note } from "../types/notes";
+import type { ApiResponse } from "../types/auth";
 
-//Define backend response shape
-type AllNotesResponse = {
-  success: boolean;
-  data: Note[];
-};
-
-type NoteResponse = {
-  success: boolean;
-  data: Note;
-};
 
 // GET NOTES
 export const getNotes = async (): Promise<Note[]> => {
-  const res = await api.get<AllNotesResponse>("/notes");
-  return res.data.data; 
+  const res = await api.get<ApiResponse<Note[]>>("/notes");
+  return res.data.data;
 };
 
 // CREATE NOTE
@@ -23,7 +14,7 @@ export const createNote = async (data: {
   title: string;
   content: string;
 }): Promise<Note> => {
-  const res = await api.post<NoteResponse>("/notes", data);
+  const res = await api.post<ApiResponse<Note>>("/notes", data);
   return res.data.data;
 };
 
@@ -32,7 +23,7 @@ export const updateNote = async (
   id: string,
   data: Partial<Note>
 ): Promise<Note> => {
-  const res = await api.put<NoteResponse>(`/notes/${id}`, data);
+  const res = await api.put<ApiResponse<Note>>(`/notes/${id}`, data);
   return res.data.data;
 };
 
@@ -43,6 +34,6 @@ export const deleteNote = async (id: string): Promise<void> => {
 
 // ARCHIVE NOTE
 export const archiveNote = async (id: string): Promise<Note> => {
-  const res = await api.patch<NoteResponse>(`/notes/${id}/archive`);
+  const res = await api.patch<ApiResponse<Note>>(`/notes/${id}/archive`);
   return res.data.data;
 };
