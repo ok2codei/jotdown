@@ -151,6 +151,7 @@ export const updateNote = async (req, res) => {
 export const deleteNote = async (req, res) => {
   try {
     const { id } = req.params;
+    const noteId = parseInt(id);
     const userId = req.user.user_id;
 
     const { rowCount } = await db.query(
@@ -158,7 +159,7 @@ export const deleteNote = async (req, res) => {
        SET deleted_at = CURRENT_TIMESTAMP
        WHERE id = $1
        AND user_id = $2`,
-      [id,userId]
+      [noteId,userId]
     );
 
     if (rowCount === 0) {
@@ -174,13 +175,13 @@ export const deleteNote = async (req, res) => {
     });
 
   } catch (error) {
-    console.error(error);
-
-    res.status(500).json({
-      success: false,
-      message: "Failed to delete note"
-    });
-  }
+    console.error("❌ DELETE ERROR:", error.stack);
+    res.status(500).json({ 
+      success: false, 
+      message: "Server Error during deletion", 
+      dev_err: error.message
+  })
+}
 };
 
 

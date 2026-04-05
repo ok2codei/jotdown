@@ -33,12 +33,6 @@ export const verifyToken= async (req, res, next) => {
   next();
 
  } catch (error) {
-
-  console.error("--- AUTH ERROR ---");
-  console.error("Message:", error.message);
-  console.error("Stack:", error.stack);
-  return res.status(403).json({ message: "Invalid token", dev_err: error.message });
-
+  return res.status(403).json({ message: "Invalid token"});
  }
-
 };

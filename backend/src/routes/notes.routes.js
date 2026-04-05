@@ -18,7 +18,7 @@ router.get("/", verifyToken,  getNotes);
 router.get("/:id", verifyToken,  getNotesById);
 router.post("/", verifyToken, validateNote, createNote);
 router.put("/:id", verifyToken, validateNote, updateNote);
-router.delete("/:id", verifyToken, validateNote, deleteNote);
+router.delete("/:id", verifyToken, deleteNote);
 router.patch("/:id/archive",verifyToken,archiveNote);
 router.get("/by-tag/:tagId",verifyToken,getNotesByTag);
 router.get("/search",verifyToken,searchNote);
