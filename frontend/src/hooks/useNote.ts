@@ -50,11 +50,13 @@ export const useNotes = () => {
         title: tempNote.title,
         content: tempNote.content,
       });
+      const normalizedSaved = {...saved, id:saved.id}
 
       // replace temp with real
       setNotes(prev =>
-        prev.map(n => (n.id === tempNote.id ? saved : n))
+        prev.map(n => (n.id === tempNote.id ? normalizedSaved : n))
       );
+      setActiveNoteId(normalizedSaved.id);
     } catch (err) {
       setError((err as Error).message);
 
@@ -86,7 +88,6 @@ export const useNotes = () => {
 
     try {
       await noteService.deleteNote(id);
-      console.error("note not deleted");
     } catch (err) {
       setError((err as Error).message);
       setNotes(prevNotes); // rollback

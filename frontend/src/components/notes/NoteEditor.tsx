@@ -8,7 +8,13 @@ type Props = {
 };
 
 const NoteEditor = ({ note, onChange }: Props) => {
-  if (!note) return <div>Select a note</div>;
+  if (!note) {
+    return (
+      <div className="flex items-center justify-center h-full text-gray-400">
+        <p>Select a note to start editing</p>
+      </div>
+    );
+  }
 
   return (
     <div>
