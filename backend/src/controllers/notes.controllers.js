@@ -1,53 +1,62 @@
 import db from "../config/db.js";
 
 export const getNotes = async (req, res) => {
+  try {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const search = req.query.search || ""; // 1. Grab search from query params
+    const offset = (page - 1) * limit;
+    const userId = req.user.user_id;
 
- try {
+    // 2. Build the dynamic WHERE clause
+    // We always want the user_id and non-deleted notes
+    let queryFilter = `WHERE user_id = $1 AND deleted_at IS NULL`;
+    let queryParams = [userId];
 
-  const page = parseInt(req.query.page) || 1;
-  const limit = parseInt(req.query.limit) || 10;
+    // 3. If there is a search term, add the ILIKE condition
+    if (search) {
+      queryFilter += ` AND (title ILIKE $2 OR content ILIKE $2)`;
+      queryParams.push(`%${search}%`);
+    }
 
-  const offset = (page - 1) * limit;
+    // 4. Get total count for pagination (using the same filter)
+    const totalResult = await db.query(
+      `SELECT COUNT(*) FROM app.notes ${queryFilter}`,
+      queryParams
+    );
+    const total = parseInt(totalResult.rows[0].count);
 
-  const userId = req.user.user_id;
+    // 5. Get paginated & filtered notes
+    // We need to add LIMIT and OFFSET to the params array
+    const paginationParams = [...queryParams, limit, offset];
+    
+    // The placeholders ($) depend on whether search was added
+    const limitIndex = queryParams.length + 1;
+    const offsetIndex = queryParams.length + 2;
 
-  // get total count
-  const totalResult = await db.query(
-   `SELECT COUNT(*) FROM app.notes
-    WHERE user_id=$1
-    AND deleted_at IS NULL`,
-    [userId]
-  );
+    const { rows } = await db.query(
+      `SELECT * FROM app.notes 
+       ${queryFilter}
+       ORDER BY created_at DESC 
+       LIMIT $${limitIndex} OFFSET $${offsetIndex}`,
+      paginationParams
+    );
 
-  const total = parseInt(totalResult.rows[0].count);
+    res.status(200).json({
+      success: true,
+      page,
+      limit,
+      total,
+      data: rows
+    });
 
-  // get paginated notes
-  const { rows } = await db.query(
-   `SELECT * FROM app.notes
-    WHERE user_id=$1
-    AND deleted_at IS NULL
-    ORDER BY created_at DESC
-    LIMIT $2 OFFSET $3`,
-   [userId, limit, offset]
-  );
-
-  res.status(200).json({
-   success: true,
-   page,
-   limit,
-   total,
-   data: rows
-  });
-
- } catch (error) {
-  console.error(error);
-  res.status(500).json({
-   success:false,
-   message:"Failed to fetch notes"
-  });
-
- }
-
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch notes"
+    });
+  }
 };
 
 export const getNotesById = async (req, res)=>{
@@ -324,3 +333,13 @@ export const getNotesWithTags = async (req, res) => {
  }
 
 };
+
+export const getBruteTags= async(req,res)=>{
+   const { search } = req.query;
+   const result = await db.query(
+    `SELECT * FROM app.notes
+    WHERE content ILIKE $1`,
+    [`%${search}%`]
+   );
+   res.json(result.rows);
+}

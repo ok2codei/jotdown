@@ -13,6 +13,7 @@ import { verifyToken } from "../middleware/authMiddleware.js";
 import { validateNote } from "../middleware/validateNote.js";
 
 const router= express.Router();
+    
 
 router.get("/", verifyToken,  getNotes);
 router.get("/:id", verifyToken,  getNotesById);

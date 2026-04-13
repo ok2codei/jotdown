@@ -4,11 +4,13 @@ import type { ApiResponse } from "../types/auth";
 
 
 // GET NOTES
-export const getNotes = async (): Promise<Note[]> => {
-  const res = await api.get<ApiResponse<Note[]>>("/notes");
+export const getNotes = async (search?: string): Promise<Note[]> => {
+  const res = await api.get<ApiResponse<Note[]>>("/notes", {
+    params: search ? { search } : {}
+  });
+
   return res.data.data;
 };
-
 // CREATE NOTE
 export const createNote = async (data: {
   title: string;
@@ -37,3 +39,4 @@ export const archiveNote = async (id: string): Promise<Note> => {
   const res = await api.patch<ApiResponse<Note>>(`/notes/${id}/archive`);
   return res.data.data;
 };
+

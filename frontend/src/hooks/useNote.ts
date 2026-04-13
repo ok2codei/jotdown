@@ -11,13 +11,13 @@ export const useNotes = () => {
   const activeNote = notes.find(n => n.id === activeNoteId) || null;
 
 
-  useEffect(() => {
-    const fetchNotes = async () => {
+  
+    const fetchNotes = async (searchTag?: string) => {
       const token = localStorage.getItem("token");
     if (!token) return; 
       setLoading(true);
       try {
-        const data = await noteService.getNotes();
+        const data = await noteService.getNotes(searchTag);
 
         setNotes(Array.isArray(data) ? data : []);
       } catch (err) {
@@ -27,8 +27,11 @@ export const useNotes = () => {
       }
     };
 
+  
+  
+  useEffect(()=>{
     fetchNotes();
-  }, []);
+  },[])
 
   //  CREATE (OPTIMISTIC)
   const createNote = async () => {
@@ -107,11 +110,14 @@ export const useNotes = () => {
     }
   };
 
+
+
   return {
     notes,
     activeNote,
     activeNoteId,
     setActiveNoteId,
+    fetchNotes,
     createNote,
     updateNote,
     deleteNote,

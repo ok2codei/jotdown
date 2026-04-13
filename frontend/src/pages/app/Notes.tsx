@@ -2,6 +2,7 @@ import { useNotes } from "../../hooks/useNote";
 import NoteList from "../../components/notes/NoteList";
 import NoteEditor from "../../components/notes/NoteEditor";
 import Button from "../../components/ui/Button";
+import { useState } from "react";
 
 const Notes = () => {
   const {
@@ -9,11 +10,15 @@ const Notes = () => {
     activeNote,
     activeNoteId,
     setActiveNoteId,
+    fetchNotes,
     createNote,
     updateNote,
     deleteNote,
     archiveNote,
   } = useNotes();
+  
+  const [tag, setTag] = useState("");
+  
 
   return (
     <div className="flex h-screen bg-gray-50">
@@ -22,8 +27,25 @@ const Notes = () => {
         <Button onClick={createNote} className="w-full mb-4">
           + New Note
         </Button>
+          <div className="flex-1 overflow-y-auto">
+  <input
+    className="w-full p-2 border rounded mb-2"
+    placeholder="Search by title or content..."
+    value={tag}
+    onChange={(e) => {
+      setTag(e.target.value);
+      fetchNotes(e.target.value); // Instant search!
+    }}
+  />
 
-        <div className="flex-1 overflow-y-auto">
+  {/* You can keep or remove the button now */}
+  <button 
+    className="text-xs text-blue-500 mb-4" 
+    onClick={() => { setTag(""); fetchNotes(""); }}
+  >
+    Clear Search
+  </button>
+        
           <NoteList
             notes={notes.filter(n => !n.isArchived)}
             activeId={activeNoteId}
