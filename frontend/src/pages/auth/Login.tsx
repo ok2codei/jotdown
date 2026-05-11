@@ -8,7 +8,7 @@ import { useAuth } from "../../hooks/useAuth";
 
 const Login=()=>{
 const [loading, setLoading] = useState(false);
-const [error, setError] = useState(null);
+const [_error, setError] = useState(null);
 
    const{
       register,

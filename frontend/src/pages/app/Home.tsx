@@ -1,4 +1,4 @@
-import Note from "@/pages/app/Notes.tsx";
+
 
 const Home=()=>{
     return (
