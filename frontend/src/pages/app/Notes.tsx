@@ -21,7 +21,7 @@ const Notes = () => {
   
 
   return (
-    <div className="flex h-screen bg-gray-50">
+    <div className="flex h-screen bg-ui-canvas dark:bg-ui-canvas-dark font-brand transition-colors duration-300">
       {/* Sidebar */}
       <aside className="w-1/4 border-r bg-white p-4 flex flex-col">
         <Button onClick={createNote} className="w-full mb-4">
@@ -53,6 +53,8 @@ const Notes = () => {
           />
         </div>
       </aside>
+
+
 
       {/* Editor & Actions Area */}
       <main className="flex-1 p-6 bg-white">

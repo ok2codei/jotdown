@@ -33,12 +33,15 @@ async function startServer() {
     await initDB();
     console.log("Database initialized");
   } catch (err) {
-    console.error("Database init skipped or failed:", err.message);
-    // Continue starting server anyway if the tables already exist
+    console.error("Database init failed:", err.message);
   }
 
-  app.listen(5000, () => {
-    console.log("Server started on port 5000");
+  // Use Render's port, or 5000 for local development
+  const PORT = process.env.PORT || 5000;
+
+  // Listen on '0.0.0.0' to ensure Render can see the traffic
+  app.listen(PORT, '0.0.0.0', () => {
+    console.log(`Server started on port ${PORT}`);
   });
 }
 

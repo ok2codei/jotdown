@@ -1,9 +1,10 @@
-import  Notes  from "../pages/app/Notes" 
+
+import { Outlet } from "react-router-dom";
 
 const AppLayout=()=>{
     return (
         <>
-        <Notes />
+        <Outlet />
         </>
     )
 }

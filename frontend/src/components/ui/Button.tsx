@@ -6,11 +6,11 @@ type Props = {
 };
 
 const Button = ({ children, onClick, variant = "primary", className }: Props) => {
-  const base = "px-4 py-2 rounded font-medium transition";
+  const base = "px-4 py-2 rounded font-brand transition-all duration-200 active:scale-95";
 
   const styles = {
-    primary: "bg-black text-white hover:opacity-80",
-    danger: "bg-red-500 text-white hover:opacity-80",
+    primary: "bg-brand-primary text-white hover:opacity-80",
+    danger: "bg-brand-accent text-white hover:opacity-80",
     secondary: "bg-gray-300 text-black hover:opacity-80",
   };
 

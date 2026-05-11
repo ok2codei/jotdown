@@ -1,10 +1,11 @@
-import { createBrowserRouter, Navigate } from "react-router-dom";
+import { createBrowserRouter } from "react-router-dom";
 import AuthLayout from "../layouts/AuthLayout" ;
 import AppLayout from "../layouts/AppLayout.tsx";
 
 import Login from "../pages/auth/Login.tsx";
 import  Register  from "../pages/auth/Register.tsx";
 import  Notes  from "../pages/app/Notes.tsx";
+import Home from "../pages/app/Home.tsx";
 
 import ProtectedRoute from "./ProtectedRoute.tsx";
 
@@ -12,7 +13,7 @@ const router = createBrowserRouter([
 
     {
         path : "/",
-        element: <Navigate to="/auth/login" />
+        element: <Home />
     },
     {
         path: "/auth",
@@ -24,7 +25,7 @@ const router = createBrowserRouter([
     },
 
     {
-        path: "/",
+        path: "/app",
         element: (  
         <ProtectedRoute>   
              <AppLayout /> 
@@ -32,9 +33,10 @@ const router = createBrowserRouter([
         ),
         children: [
       {
-        path: "notes",
-        element: <Notes />,
+        path:"notes",
+        element:<Notes />,
       },
+      
     ],
     },
 ]) ;

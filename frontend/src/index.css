@@ -1,3 +1,21 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base{
+  body{
+    @apply bg-ui-canvas text-slate-900 transition-colors duration-300;
+  }
+  .dark body {
+    @apply bg-ui-canvas-dark text-slate-100;
+  }
+}
+@layer components {
+  /* Now your classes work for BOTH modes automatically */
+  .note-card {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    color: var(--text-main);
+    @apply rounded-xl p-5 transition-colors duration-300;
+  }
+}

@@ -4,7 +4,7 @@ const AuthLayout = () => {
     return (
         <main className="h-screen flex flex-col items-center justify-center bg-gray-200 p-4">
             <div className="mb-8 text-center">
-                <h2 className="text-3xl font-bold text-blue-600">Jotdown</h2>
+                <h2 className="text-3xl font-bold text--600">Jotdown</h2>
                 <p className="text-gray-500">Your thoughts organized.</p>
             </div>
 
