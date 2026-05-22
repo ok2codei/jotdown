@@ -1,6 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import AuthLayout from "../layouts/AuthLayout" ;
 import AppLayout from "../layouts/AppLayout.tsx";
+import MarketingLayout from "@/layouts/MarketingLayout.tsx";
 
 import Login from "../pages/auth/Login.tsx";
 import  Register  from "../pages/auth/Register.tsx";
@@ -13,7 +14,13 @@ const router = createBrowserRouter([
 
     {
         path : "/",
-        element: <Home />
+        element: <MarketingLayout/>,
+        children:[
+            {
+                index:true,
+                element: <Home />,
+            },
+        ],
     },
     {
         path: "/auth",
@@ -36,6 +43,10 @@ const router = createBrowserRouter([
         path:"notes",
         element:<Notes />,
       },
+    //   {
+    //     path:"archive",
+    //     element:<Archive />,
+    //   },
       
     ],
     },

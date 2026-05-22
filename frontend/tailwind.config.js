@@ -33,6 +33,7 @@ export default {
     },
     fontSize: {
       'xs-tiny': '0.65rem', // Custom tiny text for labels
+      'xl-large':'4rem',
     }
     },
   },

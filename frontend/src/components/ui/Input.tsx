@@ -1,17 +1,10 @@
-type Props = {
-  value: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  placeholder?: string;
-  className?: string;
-};
+type Props = React.InputHTMLAttributes<HTMLInputElement>;
 
-const Input = ({ value, onChange, placeholder, className }: Props) => {
+const Input = ({ className = "", ...props }: Props) => {
   return (
     <input
-      value={value}
-      onChange={onChange}
-      placeholder={placeholder}
-      className={`w-full p-2 border rounded outline-none ${className}`}
+      {...props}
+      className={`w-full p-2 border dark:border-ui-border-dark rounded outline-none ${className}`}
     />
   );
 };

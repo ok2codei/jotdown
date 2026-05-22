@@ -21,15 +21,14 @@ const Notes = () => {
   
 
   return (
-    <div className="flex h-screen bg-ui-canvas dark:bg-ui-canvas-dark font-brand transition-colors duration-300">
-      {/* Sidebar */}
-      <aside className="w-1/4 border-r bg-white p-4 flex flex-col">
-        <Button onClick={createNote} className="w-full mb-4">
+  <div className="flex gap-6 h-full">
+        {/* Sidebar */}
+<aside className="w-80 rounded-2xl bg-ui-surface dark:bg-ui-surface-dark p-4 flex flex-col border border-ui-border dark:border-ui-border-dark">        <Button onClick={createNote} className="w-full mb-4">
           + New Note
         </Button>
           <div className="flex-1 overflow-y-auto">
   <input
-    className="w-full p-2 border rounded mb-2"
+    className="w-full px-4 py-2 rounded-xl border border-ui-border dark:border-ui-border-dark bg-transparent outline-none focus:ring-2 focus:ring-brand-primary mb-3"
     placeholder="Search by title or content..."
     value={tag}
     onChange={(e) => {
@@ -38,9 +37,13 @@ const Notes = () => {
     }}
   />
 
+  <h2 className="text-lg font-semibold mb-4">
+  Notes
+  </h2>
+
   {/* You can keep or remove the button now */}
   <button 
-    className="text-xs text-blue-500 mb-4" 
+    className="text-sm text-brand-primary mb-4 hover:underline"
     onClick={() => { setTag(""); fetchNotes(""); }}
   >
     Clear Search
@@ -57,13 +60,12 @@ const Notes = () => {
 
 
       {/* Editor & Actions Area */}
-      <main className="flex-1 p-6 bg-white">
-        {activeNote ? (
+<main className="flex-1 rounded-2xl bg-ui-surface dark:bg-ui-surface-dark p-6 overflow-y-auto">        {activeNote ? (
     /* Adding a KEY here forces a hard refresh when the ID changes */
     <div key={activeNote.id} className="max-w-3xl mx-auto">
       <NoteEditor note={activeNote} onChange={updateNote} />
 
-      <div className="mt-8 flex gap-3 pt-6 border-t border-gray-100">
+      <div className="mt-8 flex gap-3 pt-6  border-gray-100">
         <Button variant="secondary" onClick={() => archiveNote(activeNote.id)}>
           Archive Note
         </Button>

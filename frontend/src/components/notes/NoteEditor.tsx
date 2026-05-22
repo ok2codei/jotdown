@@ -24,7 +24,7 @@ const NoteEditor = ({ note, onChange }: Props) => {
           onChange({ ...note, title: e.target.value })
         }
         placeholder="Title"
-        className="text-2xl font-bold mb-4"
+        className="text-2xl font-bold mb-4 dark:bg-ui-surface-dark"
       />
 
       <Textarea

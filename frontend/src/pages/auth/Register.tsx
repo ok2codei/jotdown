@@ -2,12 +2,12 @@ import { useState } from 'react';
 import type { RegisterFormData } from "../../types/auth";
 import { RegisterUser } from '@/services/authService';
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom"; 
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
-    const[loading, setLoading]= useState(false);
-    const[serverError, setServerError]= useState(null);
-    
+    const [loading, setLoading] = useState(false);
+    const [serverError, setServerError] = useState(null);
+
     const {
         register,
         handleSubmit,
@@ -19,87 +19,87 @@ const Register = () => {
             password: ""
         }
     });
-    
-    const navigate= useNavigate();
+
+    const navigate = useNavigate();
     const onSubmit = async (data: RegisterFormData) => {
-        try{
+        try {
             setLoading(true);
             setServerError(null);
             await RegisterUser(data);
             navigate("/auth/login");
-        }catch(err:any){
+        } catch (err: any) {
             setServerError(err.message || "Registration failed")
-        }finally{
+        } finally {
             setLoading(false);
         }
     };
 
     return (
-        <main className="flex flex-col items-center justify-center bg-gray-100">
-            <section className="bg-white p-8 rounded-lg shadow-md w-96">
+        <main className="flex flex-col items-center justify-center">
+            <section>
 
-                { serverError && <p role="alert" className='bg-red-100 text-red-700 text-sm p-2 mb-2 rounded-sm'>{serverError}</p>}
+                {serverError && <p role="alert" className='bg-red-100 text-red-700 text-sm p-2 mb-2 rounded-sm'>{serverError}</p>}
                 <h1 className="text-2xl font-bold mb-6">Create Account</h1>
-                
-                <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-                            {/* REGISTER NAME */}
 
-                           
-                        <label className="block text-sm ">Name</label>
-                        <input 
+                <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+                    {/* REGISTER NAME */}
+
+
+                    <label className="block text-sm ">Name</label>
+                    <input
                         id="name"
                         type="text"
-                            {...register("username", { required: "Name is required" })} 
-                            className="w-full border p-2 rounded"
-                        />
-                        {errors.username && <p className="text-red-500 text-sm mb-2">* {errors.username.message}</p>}
-                            {/* EMAIL */}
-                            <label htmlFor="email" className="block text-sm mb-1">Email</label>
-                             <input
-                            id="email"
-                            type="email"
-                            aria-invalid={ !!errors.email} 
-                            { ...register("email",{
-                                required:"Email is required",
-                                pattern:{
-                                    value: /^\S+@\S+$/,
-                                    message:"Invalid email format",
+                        {...register("username", { required: "Name is required" })}
+                        className="w-full border border-brand-secondary p-2 rounded text-brand-secondary dark:bg-ui-canvas-dark dark:text-white"
+                    />
+                    {errors.username && <p className="text-red-500 text-sm mb-2">* {errors.username.message}</p>}
+                    {/* EMAIL */}
+                    <label htmlFor="email" className="block text-sm mb-1">Email</label>
+                    <input
+                        id="email"
+                        type="email"
+                        aria-invalid={!!errors.email}
+                        {...register("email", {
+                            required: "Email is required",
+                            pattern: {
+                                value: /^\S+@\S+$/,
+                                message: "Invalid email format",
                             }
-                            })}
-                            className="w-full border rounded p-2"/>
-                            {errors.email && (
-                            <p role="alert" className="text-red-500 text-sm mb-2">
-                                * {errors.email.message}
-                            </p>
-                            )}
+                        })}
+                        className="w-full border border-brand-secondary rounded p-2 dark:bg-ui-canvas-dark dark:text-white" />
+                    {errors.email && (
+                        <p role="alert" className="text-red-500 text-sm mb-2">
+                            * {errors.email.message}
+                        </p>
+                    )}
 
-                            {/* PASSWORD */}
+                    {/* PASSWORD */}
 
-                            <label htmlFor="password" className="block text-sm mb-1">Password</label>
-                            <input 
-                            id="password"
-                            type="password"
-                            aria-invalid={!!errors.password}
-                            { ...register( "password",{
+                    <label htmlFor="password" className="block text-sm mb-1">Password</label>
+                    <input
+                        id="password"
+                        type="password"
+                        aria-invalid={!!errors.password}
+                        {...register("password", {
                             required: "Password is required",
-                            minLength:{
+                            minLength: {
                                 value: 6,
-                                message:"Minimum 6 characters",
+                                message: "Minimum 6 characters",
                             }
-                            })}
-                            className="w-full p-2 border rounded mb-2"/>
-                            { errors.password && (
-                            <p role="alert" className="text-red-500 text-sm mb-2">
-                                * {errors.password.message}
-                            </p>
-                            )}
-                                    
+                        })}
+                        className="w-full p-2 border border-brand-secondary rounded mb-2 dark:bg-ui-canvas-dark dark:text-white" />
+                    {errors.password && (
+                        <p role="alert" className="text-red-500 text-sm mb-2">
+                            * {errors.password.message}
+                        </p>
+                    )}
 
-                    <button 
-                    type="submit"
-                    disabled={loading}
-                    className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700">
-                    {loading ? "Registering..." : "Register"}
+
+                    <button
+                        type="submit"
+                        disabled={loading}
+                        className="w-full bg-brand-primary text-white py-2 rounded ">
+                        {loading ? "Registering..." : "Register"}
                     </button>
                 </form>
             </section>
