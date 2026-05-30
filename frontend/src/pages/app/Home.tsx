@@ -1,4 +1,6 @@
 import { Link } from "react-router-dom";
+import logo from '../../assets/hero-dark.png';
+import logowhite from '../../assets/hero-white.png'
 
 const Home = () => {
   return (
@@ -18,9 +20,9 @@ const Home = () => {
 
         <div className="flex gap-4 mt-8">
           <Link to="/auth/register">
-          <button className="px-6 py-3 rounded-xl bg-brand-primary text-white">
-          Get Started
-          </button>
+            <button className="px-6 py-3 rounded-xl bg-brand-primary text-white">
+              Get Started
+            </button>
           </Link>
 
           <button className="px-6 py-3 rounded-xl border border-brand-primary ">
@@ -29,7 +31,16 @@ const Home = () => {
         </div>
 
         {/* Placeholder Image */}
-        <div className="mt-16 w-full max-w-5xl h-[400px] rounded-3xl border border-ui-border dark:border-ui-border-dark bg-ui-surface dark:bg-ui-surface-dark shadow-lg">
+        <div className="mt-16 w-full max-w-4xl rounded-2xl border border-ui-border dark:border-ui-border-dark bg-ui-surface dark:bg-ui-surface-dark shadow-lg overflow-hidden">
+          {<img src={logo}
+            alt="hero"
+            className="w-full h-auto rounded-2xl object-cover dark:hidden"
+          />}
+          {<img src={logowhite}
+            alt="hero1"
+            className="hidden dark:block w-full h-auto rounded-2xl object-cover"
+          />}
+
         </div>
 
       </section>

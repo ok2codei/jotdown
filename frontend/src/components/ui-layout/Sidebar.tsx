@@ -1,19 +1,25 @@
 import { Link, useLocation } from "react-router-dom";
-import ThemeToggle from "@/components/ui/ThemeToggle";
+import { useState } from 'react'
 
 const Sidebar = () => {
   const location = useLocation();
+  const[isOpen, setIsOpen]=useState(true);
+
+  const handleSidebar=()=>{
+   setIsOpen(prev=> !prev)
+  }
+  if (!isOpen) {
+    // You could also add a small floating button here to open it back up!
+    return <button onClick={handleSidebar} className=" font-bold">☰</button>;
+  }
 
   return (
-    <aside className="w-64 min-h-screen border-r border-ui-border dark:border-ui-border-dark bg-ui-surface dark:bg-ui-surface-dark p-4">
+    <aside className="aboslute w-1/4 min-h-screen border-r border-ui-border dark:border-ui-border-dark bg-ui-surface dark:bg-ui-surface-dark p-4">
 
       {/* Logo */}
       <div className="flex items-center justify-between mb-8">
-        <h1 className="text-2xl font-bold">
-          JotDown
-        </h1>
-
-        <ThemeToggle />
+  
+        <button onClick={handleSidebar} className="hover:text-red-500 transition font-bold "> X </button>
       </div>
 
       {/* Navigation */}
