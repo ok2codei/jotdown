@@ -3,6 +3,7 @@ import NoteList from "../../components/notes/NoteList";
 import NoteEditor from "../../components/notes/NoteEditor";
 import Button from "../../components/ui/Button";
 import ThemeToggle from "@/components/ui/ThemeToggle";
+import { useAuth } from "../../hooks/useAuth";
 import { useState } from "react";
 
 const Notes = () => {
@@ -16,16 +17,21 @@ const Notes = () => {
     updateNote,
     deleteNote,
     archiveNote,
+    reorderNotes,
   } = useNotes();
   
   const [tag, setTag] = useState("");
+  const { user } = useAuth();
+   console.log(user)
+  
+  const username = user?.name;
   
 
   return (
   <div className=" flex gap-6 h-full">
         <div className="flex flex-col  mb-8">
         <h1 className="m-6 text-2xl font-bold">
-          JotDown
+          {username}
         </h1>
      
         {/* Sidebar */}
@@ -60,6 +66,7 @@ const Notes = () => {
             notes={notes.filter(n => !n.isArchived)}
             activeId={activeNoteId}
             onSelect={setActiveNoteId}
+            onReorder={reorderNotes}
           />
         </div>
       </aside>

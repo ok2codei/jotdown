@@ -110,6 +110,10 @@ export const useNotes = () => {
     }
   };
 
+  const reorderNotes= (newNotes: Note[])=>{
+    setNotes(newNotes);
+  }
+
 
 
   return {
@@ -122,6 +126,7 @@ export const useNotes = () => {
     updateNote,
     deleteNote,
     archiveNote,
+    reorderNotes,
     loading,
     error,
   };
