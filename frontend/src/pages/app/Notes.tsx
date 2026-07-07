@@ -22,7 +22,7 @@ const Notes = () => {
   
   const [tag, setTag] = useState("");
   const { user } = useAuth();
-   console.log(user)
+  
   
   const username = user?.name;
   
