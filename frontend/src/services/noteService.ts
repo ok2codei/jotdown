@@ -40,3 +40,8 @@ export const archiveNote = async (id: string): Promise<Note> => {
   return res.data.data;
 };
 
+//RESTORE ARCHIVE NOTE
+export const restoreNote = async (id: string): Promise<Note> => {
+  const res = await api.patch<ApiResponse<Note>>(`/notes/${id}/restore`);
+  return res.data.data;
+};

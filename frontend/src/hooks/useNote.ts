@@ -14,11 +14,10 @@ export const useNotes = () => {
   
     const fetchNotes = async (searchTag?: string) => {
       const token = localStorage.getItem("token");
-    if (!token) return; 
+      if (!token) return; 
       setLoading(true);
       try {
         const data = await noteService.getNotes(searchTag);
-
         setNotes(Array.isArray(data) ? data : []);
       } catch (err) {
         setError((err as Error).message);
@@ -68,7 +67,7 @@ export const useNotes = () => {
     }
   };
 
-  // 🔹 UPDATE (OPTIMISTIC)
+  //  UPDATE (OPTIMISTIC)
   const updateNote = async (updated: Note) => {
     setNotes(prev =>
       prev.map(n => (n.id === updated.id ? updated : n))
@@ -98,22 +97,44 @@ export const useNotes = () => {
   };
 
   //  ARCHIVE
-  const archiveNote = async (id: string) => {
-    try {
-      const updated = await noteService.archiveNote(id);
+  
+  const archiveNote = async (id : string)=>{
+     //1. save current state for rollback
+     const previousNotes = notes;
 
-      setNotes(prev =>
-        prev.map(n => (n.id === id ? updated : n))
-      );
+    //2. Update UI immediately 
+    setNotes(prev =>
+      prev.map(note =>
+         note.id === id
+        ? {...note, isArchived : true}
+        : note)
+    );
+
+    //3. Sync with backend
+    try{
+      await noteService.archiveNote(id)
     } catch (err) {
       setError((err as Error).message);
-    }
-  };
+      setNotes(previousNotes);
+    };
 
+  }
   const reorderNotes= (newNotes: Note[])=>{
     setNotes(newNotes);
   }
 
+
+  const restoreNote = async (id: string) => {
+  try {
+    const updated = await noteService.restoreNote(id);
+
+    setNotes(prev =>
+      prev.map(n => (n.id === id ? updated : n))
+    );
+  } catch (err) {
+    setError((err as Error).message);
+  }
+};
 
 
   return {
@@ -126,8 +147,10 @@ export const useNotes = () => {
     updateNote,
     deleteNote,
     archiveNote,
+    restoreNote,
     reorderNotes,
     loading,
     error,
   };
+
 };

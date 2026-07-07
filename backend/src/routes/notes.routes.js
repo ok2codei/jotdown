@@ -6,6 +6,7 @@ import {
     updateNote,
     deleteNote,
     archiveNote,
+    restoreNote,
     searchNote,
     getNotesByTag
 } from "../controllers/notes.controllers.js" ;
@@ -21,6 +22,7 @@ router.post("/", verifyToken, validateNote, createNote);
 router.put("/:id", verifyToken, validateNote, updateNote);
 router.delete("/:id", verifyToken, deleteNote);
 router.patch("/:id/archive",verifyToken,archiveNote);
+router.patch("/:id/restore", verifyToken, restoreNote);
 router.get("/by-tag/:tagId",verifyToken,getNotesByTag);
 router.get("/search",verifyToken,searchNote);
 export default router;

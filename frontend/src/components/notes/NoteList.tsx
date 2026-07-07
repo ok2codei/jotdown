@@ -6,7 +6,7 @@ type Props = {
   notes: Note[];
   activeId: string | null;
   onSelect: (id: string) => void;
-  onReorder: (notes:Note[])=> void;
+  onReorder ?: (notes:Note[])=> void;
 };
 
 const NoteList = ({ notes, activeId, onSelect, onReorder }: Props) => {
@@ -28,7 +28,9 @@ const NoteList = ({ notes, activeId, onSelect, onReorder }: Props) => {
       0,
       draggedNote
     );
-    onReorder(updated);
+    if(onReorder){
+      onReorder(updated);
+    }
     setDraggedId(null);
   };
 

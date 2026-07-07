@@ -1,4 +1,5 @@
 import db from "../config/db.js";
+import { formatNote } from "../utils/dataformatter.js";
 
 export const getNotes = async (req, res) => {
   try {
@@ -47,7 +48,7 @@ export const getNotes = async (req, res) => {
       page,
       limit,
       total,
-      data: rows
+      data: rows.map(formatNote),
     });
 
   } catch (error) {
@@ -79,7 +80,7 @@ export const getNotesById = async (req, res)=>{
         
             res.status(200).json({
                 success:true,
-                data:rows[0]
+                data:formatNote(rows[0]),
             });
         
     }catch(error){
@@ -104,7 +105,7 @@ export const createNote = async (req, res) => {
 
     res.status(201).json({
       success: true,
-      data: rows[0]
+      data: formatNote(rows[0]),
     });
 
   } catch (error) {
@@ -143,7 +144,7 @@ export const updateNote = async (req, res) => {
 
     res.status(200).json({
       success: true,
-      data: rows[0]
+      data: formatNote(rows[0]),
     });
 
   } catch (error) {
@@ -219,13 +220,49 @@ export const archiveNote = async (req, res) => {
 
   res.json({
    success: true,
-   data: rows[0]
+   data: formateNote(rows[0])
   });
 
  } catch (error) {
-
   res.status(500).json({
    message: "Archive failed"
+  });
+
+ }
+
+};
+
+
+export const restoreNote = async (req, res) => {
+
+ try {
+
+  const { id } = req.params;
+
+  const { rows } = await db.query(
+   `UPDATE app.notes
+    SET is_archived = FALSE,
+        updated_at = CURRENT_TIMESTAMP
+    WHERE id=$1
+    AND user_id=$2
+    RETURNING *`,
+   [id, req.user.user_id]
+  );
+
+  if (rows.length === 0) {
+   return res.status(404).json({
+    message: "Note not found"
+   });
+  }
+
+  res.json({
+   success: true,
+   data: formateNote(rows[0])
+  });
+
+ } catch (error) {
+    res.status(500).json({
+    message: "Archive failed"
   });
 
  }
@@ -285,7 +322,7 @@ export const searchNote = async (req, res) => {
 
   res.json({
    success: true,
-   data: rows
+   data: rows.map(formatNote)
   });
 
  } catch (error) {
@@ -321,7 +358,7 @@ export const getNotesWithTags = async (req, res) => {
 
   res.json({
    success: true,
-   data: rows
+   data: rows.map(formatNote)
   });
 
  } catch (error) {
