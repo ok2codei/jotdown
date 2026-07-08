@@ -48,6 +48,7 @@ const Login = () => {
                <input
                   id="email"
                   type="email"
+                  autoComplete="off"
                   aria-invalid={!!errors.email}
                   {...register("email", {
                      required: "Email is required",

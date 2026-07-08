@@ -11,6 +11,7 @@ interface User {
 
 interface AuthContextType {
     user: User | null;
+    loading: boolean;
     login: (token: string) => void;
     logout: () => void;
 }
@@ -19,6 +20,7 @@ export const AuthContext = createContext<AuthContextType | null>(null);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const [user, setUser] = useState<User | null>(null);
+    const [loading, setLoading] = useState<boolean>(true); // Start as true!
 
     const handleUserSession = (token: string): User => {
         try {
@@ -39,9 +41,14 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     useEffect(() => {
         const token = localStorage.getItem("token");
-        if (token) setUser({ token });
-        api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-
+        if (token){
+         const sessionUser = handleUserSession(token) ;
+         setUser(sessionUser);   
+        }else {
+            // Clean up header if no token is found
+            delete api.defaults.headers.common["Authorization"];
+        }
+        setLoading(false);
     }, [])
 
     const login = (token: string) => {
@@ -55,7 +62,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ user, login, logout }}>
+        <AuthContext.Provider value={{ user, loading, login, logout }}>
             {children}
         </AuthContext.Provider>
     )
