@@ -26,12 +26,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         try {
             // Unpacks the token payload
             const decoded: any = jwtDecode(token); 
-            
+            console.log("Decoded JWT payload:", decoded)
             return {
                 token,
                 // Check whatever key your backend uses (e.g., decoded.name, decoded.username)
-                name: decoded.name || decoded.username || "User", 
-                email: decoded.email
+                name: `User #${decoded.user_id}`, 
+                email: "Verified Account"
             };
         } catch (error) {
             console.error("Failed to decode token", error);
@@ -41,15 +41,44 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     useEffect(() => {
         const token = localStorage.getItem("token");
-        if (token){
-         const sessionUser = handleUserSession(token) ;
-         setUser(sessionUser);   
-        }else {
-            // Clean up header if no token is found
+        
+        if (token) {
+            // 1. Set the authorization header immediately so the API call works
+            api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+            
+            try {
+                api.get("/users/profile")
+                    .then((res) => {
+                       // 1. Extract the nested database row cleanly
+                    const dbUser = res.data.data; 
+
+                    setUser({
+                        token,
+                        name: dbUser.username,
+                        email: dbUser.email
+                    });
+                })
+                .catch((err) => {
+                    console.error("Failed to fetch user profile data:", err);
+                    // Fallback safety net
+                    const decoded: any = jwtDecode(token);
+                    setUser({ token, name: `User #${decoded.user_id}`, email: "Verified Account" });
+                })
+                .finally(() => {
+                    setLoading(false);
+                });
+                    
+            } catch (error) {
+                console.error("Invalid token found in storage:", error);
+                logout();
+                setLoading(false);
+            }
+        } else {
+            // No token found at all
             delete api.defaults.headers.common["Authorization"];
+            setLoading(false); // 5. Stop loading immediately so they can view the login page
         }
-        setLoading(false);
-    }, [])
+    }, []);
 
     const login = (token: string) => {
         localStorage.setItem("token", token);

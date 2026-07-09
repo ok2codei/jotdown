@@ -45,7 +45,7 @@ export const updateUser = async (req, res) => {
    [username, email, userId]
   );
 
-  res.json({
+   res.json({
    success: true,
    data: rows[0]
   });
@@ -74,7 +74,7 @@ export const deleteUser = async (req, res) => {
    [userId]
   );
 
-  res.json({
+   return res.json({
    success: true,
    message: "Account deleted"
   });

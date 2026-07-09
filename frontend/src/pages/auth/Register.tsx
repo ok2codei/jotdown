@@ -49,6 +49,7 @@ const Register = () => {
                     <input
                         id="name"
                         type="text"
+                        autoComplete='off'
                         {...register("username", { required: "Name is required" })}
                         className="w-full border border-brand-secondary p-2 rounded text-brand-secondary dark:bg-ui-canvas-dark dark:text-white"
                     />
@@ -59,6 +60,7 @@ const Register = () => {
                         id="email"
                         type="email"
                         aria-invalid={!!errors.email}
+                        autoComplete='off'
                         {...register("email", {
                             required: "Email is required",
                             pattern: {
@@ -80,6 +82,7 @@ const Register = () => {
                         id="password"
                         type="password"
                         aria-invalid={!!errors.password}
+                        autoComplete='off'
                         {...register("password", {
                             required: "Password is required",
                             minLength: {
