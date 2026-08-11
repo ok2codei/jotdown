@@ -4,7 +4,7 @@ import logowhite from '../../assets/hero-white.png'
 
 const Home = () => {
   return (
-    <main className="min-h-screen bg-ui-canvas dark:bg-ui-canvas-dark text-black dark:text-white">
+    <main className="h-full bg-ui-canvas dark:bg-ui-canvas-dark text-black dark:text-white">
 
 
       {/* Hero Section */}
@@ -32,14 +32,14 @@ const Home = () => {
 
         {/* Placeholder Image */}
         <div className="mt-16 w-full max-w-4xl rounded-2xl border border-ui-border dark:border-ui-border-dark bg-ui-surface dark:bg-ui-surface-dark shadow-lg overflow-hidden">
-          {<img src={logo}
+          <img src={logo}
             alt="hero"
             className="w-full h-auto rounded-2xl object-cover dark:hidden"
-          />}
-          {<img src={logowhite}
+          />
+          <img src={logowhite}
             alt="hero1"
             className="hidden dark:block w-full h-auto rounded-2xl object-cover"
-          />}
+          />
 
         </div>
 

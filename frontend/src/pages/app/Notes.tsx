@@ -31,7 +31,7 @@ const Notes = () => {
   <div className=" flex gap-6 h-full">
         <div className="flex flex-col  mb-8">
         <h1 className="m-6 text-2xl font-bold">
-         {"Welcome, "} {username}
+         {"Hi, "} {username}
         </h1>
      
         {/* Sidebar */}

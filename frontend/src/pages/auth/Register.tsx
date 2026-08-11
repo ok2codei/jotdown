@@ -51,7 +51,7 @@ const Register = () => {
                         type="text"
                         autoComplete='off'
                         {...register("username", { required: "Name is required" })}
-                        className="w-full border border-brand-secondary p-2 rounded text-brand-secondary dark:bg-ui-canvas-dark dark:text-white"
+                        className="w-full border border-brand-secondary p-2 rounded dark:bg-ui-canvas-dark dark:text-white"
                     />
                     {errors.username && <p className="text-red-500 text-sm mb-2">* {errors.username.message}</p>}
                     {/* EMAIL */}

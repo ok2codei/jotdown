@@ -24,7 +24,7 @@ const Archive = () => {
   const archivedNotes = notes.filter(note => note.isArchived);
 
   return (
-    <div className="flex h-screen bg-ui-canvas dark:bg-ui-canvas-dark">
+    <div className="flex h-full bg-ui-canvas dark:bg-ui-canvas-dark">
 
       {/* Sidebar */}
       <aside className="w-80 rounded-2xl bg-ui-surface dark:bg-ui-surface-dark p-4 flex flex-col border border-ui-border dark:border-ui-border-dark">

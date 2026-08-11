@@ -57,7 +57,7 @@ const Login = () => {
                         message: "Invalid email format",
                      }
                   })}
-                  className="w-full border rounded p-2 dark:bg-ui-canvas-dark text-white" />
+                  className="w-full border rounded p-2 dark:bg-ui-canvas-dark dark:text-white" />
                {errors.email && (
                   <p role="alert" className="text-red-500 text-sm mb-2">
                      * {errors.email.message}
