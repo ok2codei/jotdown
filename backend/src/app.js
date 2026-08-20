@@ -7,9 +7,9 @@ import foldersRoutes from "./routes/folders.routes.js";
 import tagsRoutes from "./routes/tags.routes.js";
 import initDB from "./database/initDB.js";
 import cors from "cors";
+
+
 const app = express();
-
-
 app.use(cors({
   origin: ['http://localhost:5173',
     'https://jotdown-eta.vercel.app'
