@@ -30,7 +30,7 @@ Live Demo: https://jotdown-eta.vercel.app/
 - React Router DOM
 
 ### Backend / Services
-- Firebase / Supabase *(replace with your actual backend if needed)*
+- Supabase 
 - REST APIs
 
 ### Deployment
